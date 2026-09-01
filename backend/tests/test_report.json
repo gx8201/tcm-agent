@@ -1,0 +1,334 @@
+{
+  "timestamp": "2026-08-31 11:47:00",
+  "total": 40,
+  "passed": 29,
+  "bugs": 11,
+  "severity_summary": {
+    "通过": 29,
+    "一般": 7,
+    "严重": 2,
+    "轻微": 2
+  },
+  "results": [
+    {
+      "severity": "通过",
+      "category": "API",
+      "title": "健康检查接口正常",
+      "detail": "响应: {'service': 'my-tcm-agent', 'version': '0.1.0', 'status': 'healthy', 'timestamp': 1788147691.3365629}",
+      "reproduce": "",
+      "suggestion": ""
+    },
+    {
+      "severity": "通过",
+      "category": "API",
+      "title": "/health 接口正常",
+      "detail": "",
+      "reproduce": "",
+      "suggestion": ""
+    },
+    {
+      "severity": "通过",
+      "category": "API",
+      "title": "Swagger 文档可访问",
+      "detail": "",
+      "reproduce": "",
+      "suggestion": ""
+    },
+    {
+      "severity": "通过",
+      "category": "API",
+      "title": "OpenAPI JSON 可访问",
+      "detail": "路径: ['/api/v1/chat/generate', '/', '/health']",
+      "reproduce": "",
+      "suggestion": ""
+    },
+    {
+      "severity": "通过",
+      "category": "功能",
+      "title": "胃痛问诊 - 非流式正常",
+      "detail": "intent=diagnosis, answer_len=1750",
+      "reproduce": "",
+      "suggestion": ""
+    },
+    {
+      "severity": "通过",
+      "category": "API",
+      "title": "流式输出格式正确",
+      "detail": "事件: ['event: status', 'event: intent', 'event: status', 'event: answer_start', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_chunk', 'event: answer_end', 'event: done']",
+      "reproduce": "",
+      "suggestion": ""
+    },
+    {
+      "severity": "通过",
+      "category": "API",
+      "title": "流式输出正常结束",
+      "detail": "",
+      "reproduce": "",
+      "suggestion": ""
+    },
+    {
+      "severity": "通过",
+      "category": "功能",
+      "title": "胃痛问诊 - 知识图谱数据已返回",
+      "detail": "",
+      "reproduce": "",
+      "suggestion": ""
+    },
+    {
+      "severity": "通过",
+      "category": "功能",
+      "title": "胃痛问诊 - 回答内容充实",
+      "detail": "长度: 2130",
+      "reproduce": "",
+      "suggestion": ""
+    },
+    {
+      "severity": "通过",
+      "category": "功能",
+      "title": "胃痛问诊 - 步骤记录正常",
+      "detail": "steps=['信息收集: 提取了 3 项信息', '分析追问: 目前仅收集到饮食和胸腹方面的信息，寒热、汗出、二便、睡眠等关键辨证信息均缺失。根据决策规则，6类信息（寒热、汗出、头身、二便、饮食、睡眠）收集不足4类，需要继续追问以完善辨证依据。', '信息收集: 提取了 3 项信息', '分析追问: 目前仅收集到主诉（胃痛、胀痛、反酸），寒热、二便、睡眠等关键辨证信息尚未收集。根据决策规则，6类信息（寒热、汗出、头身、二便、饮食、睡眠）收集不足4类，需要继续追问以完善辨证依据。', '信息收集: 提取了 3 项信息', '分析追问: 根据决策规则，需要收集寒热、汗出、头身、二便、饮食、睡眠这6类信息中的至少4类。目前仅收集到饮食（胃痛、胀痛、反酸）和胸腹方面的信息，还缺少寒热、汗出、头身、二便、睡眠等关键信息。需要继续追问。', '信息收集: 提取了 3 项信息', '分析追问: 目前仅收集到饮食和胸腹方面的信息，寒热、汗出、头身、二便、睡眠这5类信息均未收集到，距离4类信息收集目标还有很大差距。虽然已追问3轮，但用户每次回复基本相同，信息量有限，需要继续追问以获取更全面的辨证依据。', '信息收集: 提取了 3 项信息', '分析追问: 达到最大轮数，进入复杂度评估', '复杂度评估: simple (0分) - 症状单一明确', '简单辨证: 完成']",
+      "reproduce": "",
+      "suggestion": ""
+    },
+    {
+      "severity": "一般",
+      "category": "功能",
+      "title": "失眠问诊 - 未返回知识图谱数据",
+      "detail": "answer前200字: ### 一、四诊摘要\n\n目前收集到的患者信息较为有限，主要为问诊所得：\n1.  **主诉**：失眠。\n2.  **核心症状**：夜间入睡困难，辗转反侧，难以入眠。\n3.  **伴随症状**：未提供（如是否多梦、易醒、心烦、心悸、头晕、口干、口苦、乏力、畏寒等均不详）。\n4.  **舌脉**：未提供（舌象、脉象缺失）。\n5.  **节气背景**：当前处于立秋/处暑，暑热渐退，秋燥初起，昼夜温差开始增",
+      "reproduce": "",
+      "suggestion": ""
+    },
+    {
+      "severity": "通过",
+      "category": "功能",
+      "title": "失眠问诊 - 回答内容充实",
+      "detail": "长度: 1961",
+      "reproduce": "",
+      "suggestion": ""
+    },
+    {
+      "severity": "通过",
+      "category": "功能",
+      "title": "失眠问诊 - 步骤记录正常",
+      "detail": "steps=['信息收集: 提取了 2 项信息', '分析追问: 目前仅收集到主诉和睡眠信息，寒热、汗出、头身、二便、饮食等关键辨证信息均缺失，需要继续追问以全面了解病情。', '信息收集: 提取了 2 项信息', '分析追问: 目前仅收集到主诉（失眠）和睡眠方面的信息，寒热、汗出、头身、二便、饮食这几类信息尚未收集。根据决策规则，6类信息中至少需要收集4类才能进入辨证分析，因此需要继续追问。', '信息收集: 提取了 2 项信息', '分析追问: 目前仅收集到主诉（失眠）和睡眠情况，寒热、汗出、头身、二便、饮食这5类信息均缺失。根据决策规则，6类信息中已收集不足4类，需要继续追问。已追问2轮，还有2轮追问空间。用户反复表达失眠严重，需要进一步了解其他伴随症状来辅助辨证。', '信息收集: 提取了 2 项信息', '分析追问: 目前仅收集到睡眠方面的信息，寒热、汗出、头身、二便、饮食这几类信息均缺失。根据决策规则，需要收集至少4类信息才能进入辨证分析。已追问3轮，还有1轮机会，需要在这一轮中尽量获取更多缺失的信息类别。', '信息收集: 提取了 2 项信息', '分析追问: 达到最大轮数，进入复杂度评估', '复杂度评估: simple (0分) - 症状单一明确', '简单辨证: 完成']",
+      "reproduce": "",
+      "suggestion": ""
+    },
+    {
+      "severity": "通过",
+      "category": "功能",
+      "title": "咳嗽问诊 - 知识图谱数据已返回",
+      "detail": "",
+      "reproduce": "",
+      "suggestion": ""
+    },
+    {
+      "severity": "通过",
+      "category": "功能",
+      "title": "咳嗽问诊 - 回答内容充实",
+      "detail": "长度: 1894",
+      "reproduce": "",
+      "suggestion": ""
+    },
+    {
+      "severity": "通过",
+      "category": "功能",
+      "title": "咳嗽问诊 - 步骤记录正常",
+      "detail": "steps=['信息收集: 提取了 3 项信息', '分析追问: 目前只收集到主诉（咳嗽有痰，一周），但缺少寒热、痰的性状等关键辨证信息。需要先了解寒热情况以及痰的颜色质地，以判断是风寒、风热还是痰湿等证型。', '信息收集: 提取了 2 项信息', '分析追问: 目前仅收集到主诉（咳嗽有痰）和病程（一周），寒热、汗出、头身、二便、饮食、睡眠这6类信息均未收集到。需要继续追问，先从痰的性质和寒热汗出入手，以判断寒热属性。', '信息收集: 提取了 2 项信息', '分析追问: 目前只收集了主诉（咳嗽有痰，病程一周），但寒热、汗出、头身、二便、饮食、睡眠这6类信息均未收集。需要继续追问以获取更多辨证所需的信息。痰的颜色和质地是判断寒热属性的关键，优先追问。', '信息收集: 提取了 2 项信息', '分析追问: 根据规则，需要收集寒热、汗出、头身、二便、饮食、睡眠这6类信息中至少4类才能进入复杂度评估。目前用户仅提供了主诉（咳嗽有痰，病程一周），这6类信息均未收集到。已追问3轮，还剩1轮追问机会，需要抓紧追问最关键的辨证信息。咳嗽的辨证关键在于痰的性状（寒热属性）、是否伴有寒热表现等。应优先追问寒热与痰的性状，因为这两者对于判断咳嗽的寒热虚实至关重要。', '信息收集: 提取了 2 项信息', '分析追问: 达到最大轮数，进入复杂度评估', '复杂度评估: simple (0分) - 症状单一明确', '简单辨证: 完成']",
+      "reproduce": "",
+      "suggestion": ""
+    },
+    {
+      "severity": "通过",
+      "category": "功能",
+      "title": "闲聊意图识别正确",
+      "detail": "intent=general",
+      "reproduce": "",
+      "suggestion": ""
+    },
+    {
+      "severity": "通过",
+      "category": "功能",
+      "title": "闲聊有回答",
+      "detail": "",
+      "reproduce": "",
+      "suggestion": ""
+    },
+    {
+      "severity": "通过",
+      "category": "功能",
+      "title": "药材查询意图识别正确",
+      "detail": "",
+      "reproduce": "",
+      "suggestion": ""
+    },
+    {
+      "severity": "通过",
+      "category": "功能",
+      "title": "方剂查询意图识别正确",
+      "detail": "",
+      "reproduce": "",
+      "suggestion": ""
+    },
+    {
+      "severity": "一般",
+      "category": "异常",
+      "title": "空输入请求异常",
+      "detail": "",
+      "reproduce": "",
+      "suggestion": ""
+    },
+    {
+      "severity": "一般",
+      "category": "异常",
+      "title": "超长输入请求超时或异常",
+      "detail": "",
+      "reproduce": "",
+      "suggestion": ""
+    },
+    {
+      "severity": "通过",
+      "category": "异常",
+      "title": "2000字符输入被接受",
+      "detail": "",
+      "reproduce": "",
+      "suggestion": ""
+    },
+    {
+      "severity": "通过",
+      "category": "异常",
+      "title": "XSS注入 - 安全处理",
+      "detail": "",
+      "reproduce": "",
+      "suggestion": ""
+    },
+    {
+      "severity": "严重",
+      "category": "安全",
+      "title": "SQL注入 - 注入内容被反射",
+      "detail": "answer包含注入内容",
+      "reproduce": "",
+      "suggestion": ""
+    },
+    {
+      "severity": "通过",
+      "category": "异常",
+      "title": "Log4Shell注入 - 安全处理",
+      "detail": "",
+      "reproduce": "",
+      "suggestion": ""
+    },
+    {
+      "severity": "通过",
+      "category": "异常",
+      "title": "控制字符 - 安全处理",
+      "detail": "",
+      "reproduce": "",
+      "suggestion": ""
+    },
+    {
+      "severity": "通过",
+      "category": "异常",
+      "title": "Emoji字符 - 安全处理",
+      "detail": "",
+      "reproduce": "",
+      "suggestion": ""
+    },
+    {
+      "severity": "通过",
+      "category": "异常",
+      "title": "中文标点 - 安全处理",
+      "detail": "",
+      "reproduce": "",
+      "suggestion": ""
+    },
+    {
+      "severity": "通过",
+      "category": "异常",
+      "title": "无意义输入 'asdfghjkl' 有合理回答",
+      "detail": "",
+      "reproduce": "",
+      "suggestion": ""
+    },
+    {
+      "severity": "通过",
+      "category": "异常",
+      "title": "无意义输入 '123456789' 有合理回答",
+      "detail": "",
+      "reproduce": "",
+      "suggestion": ""
+    },
+    {
+      "severity": "通过",
+      "category": "异常",
+      "title": "无意义输入 '啊啊啊啊啊啊' 有合理回答",
+      "detail": "",
+      "reproduce": "",
+      "suggestion": ""
+    },
+    {
+      "severity": "通过",
+      "category": "异常",
+      "title": "无意义输入 '！@#￥%……&*' 有合理回答",
+      "detail": "",
+      "reproduce": "",
+      "suggestion": ""
+    },
+    {
+      "severity": "一般",
+      "category": "错误处理",
+      "title": "缺少message字段返回: N/A",
+      "detail": "",
+      "reproduce": "",
+      "suggestion": ""
+    },
+    {
+      "severity": "一般",
+      "category": "错误处理",
+      "title": "message类型错误返回: N/A",
+      "detail": "",
+      "reproduce": "",
+      "suggestion": ""
+    },
+    {
+      "severity": "一般",
+      "category": "错误处理",
+      "title": "不存在路径返回: N/A",
+      "detail": "",
+      "reproduce": "",
+      "suggestion": ""
+    },
+    {
+      "severity": "轻微",
+      "category": "错误处理",
+      "title": "错误HTTP方法返回: N/A",
+      "detail": "",
+      "reproduce": "",
+      "suggestion": ""
+    },
+    {
+      "severity": "严重",
+      "category": "安全",
+      "title": "CORS允许恶意来源",
+      "detail": "",
+      "reproduce": "",
+      "suggestion": ""
+    },
+    {
+      "severity": "一般",
+      "category": "安全",
+      "title": "min_length=1 未生效",
+      "detail": "空字符串未被Pydantic拦截",
+      "reproduce": "",
+      "suggestion": ""
+    },
+    {
+      "severity": "轻微",
+      "category": "前端",
+      "title": "未检测到前端界面文件",
+      "detail": "项目为纯后端API服务",
+      "reproduce": "",
+      "suggestion": ""
+    }
+  ]
+}

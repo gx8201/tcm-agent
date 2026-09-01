@@ -1,0 +1,18 @@
+{
+  "conversation_id": "ea513b6b-5f09-446e-a515-99f991f1e115",
+  "user_id": "default_user",
+  "created_at": "2026-08-31T15:33:12.528251",
+  "messages": [
+    {
+      "timestamp": "2026-08-31T15:33:12.528251",
+      "user_message": "什么是\n\t中医？",
+      "bot_response": "中医是中国传统医学的重要组成部分，以阴阳五行学说为理论基础，通过望闻问切四诊合参进行辨证论治。中医强调天人合一的整体观念和辨证论治的个体化治疗原则。",
+      "intent": "general",
+      "steps": [],
+      "metadata": {
+        "user_profile": {}
+      }
+    }
+  ],
+  "updated_at": "2026-08-31T15:33:12.528251"
+}

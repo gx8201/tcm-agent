@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>中医智能问诊系统</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Notion-inspired Design System */
+        :root {
+            --color-text: rgba(0,0,0,0.95);
+            --color-text-secondary: #615d59;
+            --color-text-muted: #a39e98;
+            --color-bg: #ffffff;
+            --color-bg-warm: #f6f5f4;
+            --color-border: rgba(0,0,0,0.1);
+            --color-accent: #0075de;
+            --color-accent-hover: #005bab;
+            --color-accent-bg: #f2f9ff;
+            --color-accent-text: #097fe8;
+            --color-success: #2a9d99;
+            --color-warning: #dd5b00;
+            --color-danger: #e03e3e;
+            --shadow-card: rgba(0,0,0,0.04) 0px 4px 18px, rgba(0,0,0,0.027) 0px 2.025px 7.84688px, rgba(0,0,0,0.02) 0px 0.8px 2.925px, rgba(0,0,0,0.01) 0px 0.175px 1.04062px;
+            --shadow-deep: rgba(0,0,0,0.01) 0px 1px 3px, rgba(0,0,0,0.02) 0px 3px 7px, rgba(0,0,0,0.02) 0px 7px 15px, rgba(0,0,0,0.04) 0px 14px 28px, rgba(0,0,0,0.05) 0px 23px 52px;
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-pill: 9999px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            background: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Navigation */
+        .nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--color-border);
+            padding: 0 24px;
+        }
+
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--color-text);
+        }
+
+        .nav-brand .logo {
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, var(--color-accent) 0%, #6366f1 100%);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .nav-brand span {
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: -0.2px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .nav-link {
+            padding: 6px 12px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--color-text-secondary);
+            text-decoration: none;
+            border-radius: var(--radius-sm);
+            transition: all 0.15s;
+            cursor: pointer;
+            border: none;
+            background: none;
+        }
+
+        .nav-link:hover {
+            color: var(--color-text);
+            background: rgba(0,0,0,0.04);
+        }
+
+        .nav-link.active {
+            color: var(--color-text);
+            background: rgba(0,0,0,0.06);
+        }
+
+        .nav-stats {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .nav-stat {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: var(--color-text-muted);
+        }
+
+        .nav-stat .num {
+            font-weight: 600;
+            color: var(--color-text);
+        }
+
+        /* Main Layout */
+        .main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px;
+            display: flex;
+            gap: 24px;
+            min-height: calc(100vh - 56px - 60px);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .sidebar-card {
+            background: var(--color-bg);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+        }
+
+        .sidebar-header {
+            padding: 12px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--color-text);
+            border-bottom: 1px solid var(--color-border);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sidebar-body {
+            padding: 12px;
+        }
+
+        /* Function Tabs */
+        .func-tabs {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .func-tab {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            transition: all 0.15s;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+        }
+
+        .func-tab:hover {
+            background: rgba(0,0,0,0.04);
+            color: var(--color-text);
+        }
+
+        .func-tab.active {
+            background: var(--color-accent-bg);
+            color: var(--color-accent);
+        }
+
+        .func-tab .icon {
+            width: 20px;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        /* History List */
+        .history-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .history-item {
+            padding: 10px 12px;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.15s;
+            margin-bottom: 4px;
+        }
+
+        .history-item:hover {
+            background: rgba(0,0,0,0.04);
+        }
+
+        .history-item.active {
+            background: var(--color-accent-bg);
+        }
+
+        .history-item .time {
+            font-size: 12px;
+            color: var(--color-text-muted);
+        }
+
+        .history-item .preview {
+            font-size: 13px;
+            color: var(--color-text);
+            margin-top: 4px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .history-item .meta {
+            font-size: 12px;
+            color: var(--color-text-muted);
+            margin-top: 2px;
+        }
+
+        .new-chat-btn {
+            width: 100%;
+            padding: 8px 12px;
+            background: var(--color-accent);
+            color: white;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s;
+            margin-bottom: 8px;
+        }
+
+        .new-chat-btn:hover {
+            background: var(--color-accent-hover);
+        }
+
+        /* Chat Area */
+        .chat-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--color-bg);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+        }
+
+        .chat-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--color-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .chat-header h2 {
+            font-size: 16px;
+            font-weight: 600;
+            letter-spacing: -0.2px;
+        }
+
+        .chat-header .subtitle {
+            font-size: 13px;
+            color: var(--color-text-muted);
+            margin-top: 2px;
+        }
+
+        /* Messages */
+        .messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .message {
+            margin-bottom: 20px;
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message.user { justify-content: flex-end; }
+
+        .message-bubble {
+            max-width: 75%;
+            padding: 12px 16px;
+            border-radius: var(--radius-lg);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .message.user .message-bubble {
+            background: var(--color-accent);
+            color: white;
+            border-bottom-right-radius: var(--radius-sm);
+        }
+
+        .message.bot .message-bubble {
+            background: var(--color-bg-warm);
+            color: var(--color-text);
+            border-bottom-left-radius: var(--radius-sm);
+        }
+
+        .message-bubble h3 {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--color-text);
+            margin: 16px 0 8px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .message-bubble h3:first-child { margin-top: 0; }
+        .message-bubble ul { margin: 8px 0; padding-left: 20px; }
+        .message-bubble li { margin: 4px 0; }
+
+        .kg-section {
+            background: var(--color-accent-bg);
+            border: 1px solid rgba(0,117,222,0.2);
+            border-radius: var(--radius-md);
+            padding: 12px 16px;
+            margin: 12px 0;
+        }
+
+        .kg-section h4 {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--color-accent);
+            margin-bottom: 8px;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: var(--radius-pill);
+            font-size: 12px;
+            font-weight: 500;
+            margin: 3px 2px;
+        }
+
+        .tag.herb {
+            background: #ecfdf5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+        }
+
+        .tag.formula {
+            background: #fef3c7;
+            color: #92400e;
+            border: 1px solid #fcd34d;
+        }
+
+        .disclaimer {
+            background: #fffbeb;
+            border: 1px solid #fcd34d;
+            border-radius: var(--radius-md);
+            padding: 10px 14px;
+            margin: 12px 0;
+            font-size: 13px;
+            color: #92400e;
+        }
+
+        /* Quick Questions */
+        .quick-questions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 12px 20px;
+            border-top: 1px solid var(--color-border);
+        }
+
+        .quick-btn {
+            padding: 6px 14px;
+            background: var(--color-bg);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-pill);
+            font-size: 13px;
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .quick-btn:hover {
+            border-color: var(--color-accent);
+            color: var(--color-accent);
+            background: var(--color-accent-bg);
+        }
+
+        /* Input Area */
+        .input-area {
+            display: flex;
+            padding: 16px 20px;
+            gap: 12px;
+            border-top: 1px solid var(--color-border);
+        }
+
+        .input-area input {
+            flex: 1;
+            padding: 10px 16px;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-family: inherit;
+            outline: none;
+            transition: all 0.15s;
+            background: var(--color-bg);
+        }
+
+        .input-area input:focus {
+            border-color: var(--color-accent);
+            box-shadow: 0 0 0 3px rgba(0,117,222,0.1);
+        }
+
+        .input-area input::placeholder {
+            color: var(--color-text-muted);
+        }
+
+        .input-area button {
+            padding: 10px 20px;
+            background: var(--color-accent);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .input-area button:hover {
+            background: var(--color-accent-hover);
+        }
+
+        .input-area button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Tongue Panel */
+        .tongue-panel {
+            display: none;
+            padding: 20px;
+            flex: 1;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tongue-panel.active {
+            display: flex;
+        }
+
+        .upload-area {
+            width: 100%;
+            max-width: 400px;
+            padding: 40px;
+            border: 2px dashed var(--color-border);
+            border-radius: var(--radius-lg);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .upload-area:hover {
+            border-color: var(--color-accent);
+            background: var(--color-accent-bg);
+        }
+
+        .upload-area .icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .upload-area p {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+        }
+
+        .upload-area .hint {
+            font-size: 12px;
+            color: var(--color-text-muted);
+            margin-top: 8px;
+        }
+
+        .image-preview {
+            max-width: 300px;
+            max-height: 200px;
+            margin: 16px 0;
+            border-radius: var(--radius-md);
+            display: none;
+        }
+
+        .analyze-btn {
+            padding: 10px 24px;
+            background: var(--color-accent);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            display: none;
+            margin-top: 12px;
+        }
+
+        .analyze-btn:hover {
+            background: var(--color-accent-hover);
+        }
+
+        /* Typing Indicator */
+        .typing {
+            display: none;
+            padding: 12px 16px;
+            background: var(--color-bg-warm);
+            border-radius: var(--radius-lg);
+            border-bottom-left-radius: var(--radius-sm);
+            margin-bottom: 20px;
+            max-width: 75%;
+        }
+
+        .typing .dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--color-text-muted);
+            margin: 0 3px;
+            animation: bounce 1.4s infinite ease-in-out;
+        }
+
+        .typing .dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing .dot:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 16px;
+            border-top: 1px solid var(--color-border);
+            font-size: 12px;
+            color: var(--color-text-muted);
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .main { flex-direction: column; }
+            .sidebar { width: 100%; }
+            .history-list { max-height: 200px; }
+        }
+
+        @media (max-width: 600px) {
+            .nav-stats { display: none; }
+            .messages { padding: 12px; }
+            .message-bubble { max-width: 85%; }
+            .input-area { flex-direction: column; }
+            .input-area button { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-inner">
+            <a class="nav-brand" href="#">
+                <div class="logo">医</div>
+                <span>中医智能问诊</span>
+            </a>
+            <div class="nav-links">
+                <button class="nav-link active" onclick="switchTab('chat')">问诊</button>
+                <button class="nav-link" onclick="switchTab('tongue')">舌诊</button>
+            </div>
+            <div class="nav-stats">
+                <div class="nav-stat">
+                    <span class="num" id="statConversations">0</span>
+                    <span>问诊</span>
+                </div>
+                <div class="nav-stat">
+                    <span class="num" id="statMessages">0</span>
+                    <span>消息</span>
+                </div>
+                <div class="nav-stat">
+                    <span class="num">1610</span>
+                    <span>药材</span>
+                </div>
+                <div class="nav-stat">
+                    <span class="num">266</span>
+                    <span>方剂</span>
+                </div>
+            </div>
+            <div class="nav-user" id="navUser">
+                <button class="nav-link" onclick="showLoginModal()">登录</button>
+                <button class="nav-link" onclick="showRegisterModal()">注册</button>
+            </div>
+            <div class="nav-user-info" id="navUserInfo" style="display:none">
+                <span id="navNickname"></span>
+                <button class="nav-link" onclick="logout()">退出</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-card">
+                <div class="sidebar-header">⚡ 功能</div>
+                <div class="sidebar-body">
+                    <div class="func-tabs">
+                        <button class="func-tab active" onclick="switchTab('chat')">
+                            <span class="icon">💬</span> 智能问诊
+                        </button>
+                        <button class="func-tab" onclick="switchTab('tongue')">
+                            <span class="icon">👅</span> 舌苔分析
+                        </button>
+                        <button class="func-tab" onclick="switchTab('history')">
+                            <span class="icon">📋</span> 历史记录
+                        </button>
+                        <button class="func-tab" onclick="switchTab('cases')">
+                            <span class="icon">📚</span> 医案库
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-card">
+                <div class="sidebar-header">📋 历史记录</div>
+                <div class="sidebar-body">
+                    <button class="new-chat-btn" onclick="startNewChat()">+ 新建问诊</button>
+                    <div class="history-list" id="historyList">
+                        <div style="text-align:center; padding:24px; color:var(--color-text-muted); font-size:13px;">
+                            暂无对话记录
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Chat Area -->
+        <section class="chat-area">
+            <div class="chat-header">
+                <div>
+                    <h2 id="chatTitle">智能问诊</h2>
+                    <div class="subtitle" id="chatSubtitle">描述您的症状，获取中医辨证分析</div>
+                </div>
+            </div>
+
+            <!-- Tongue Panel -->
+            <div class="tongue-panel" id="tonguePanel">
+                <div class="upload-area" onclick="document.getElementById('tongueInput').click()">
+                    <div class="icon">📷</div>
+                    <p>点击上传舌苔图片</p>
+                    <p class="hint">支持 JPG、PNG 格式，建议在自然光下拍摄</p>
+                </div>
+                <input type="file" id="tongueInput" accept="image/*" style="display:none" onchange="previewImage(this)">
+                <img id="imagePreview" class="image-preview" src="" alt="舌苔预览">
+                <button class="analyze-btn" id="analyzeBtn" onclick="analyzeTongue()">开始分析</button>
+            </div>
+
+            <!-- Messages -->
+            <div class="messages" id="messages">
+                <div class="message bot">
+                    <div class="message-bubble">
+                        <h3>您好，欢迎使用中医智能问诊</h3>
+                        <p>我是您的中医问诊助手，可以为您提供：</p>
+                        <ul>
+                            <li><strong>智能辨证</strong> — 根据症状进行中医辨证分析</li>
+                            <li><strong>舌苔分析</strong> — 上传舌苔图片获取舌诊结果</li>
+                            <li><strong>方剂推荐</strong> — 基于知识图谱推荐相关方剂</li>
+                            <li><strong>调理建议</strong> — 提供饮食、起居、情志调理方案</li>
+                        </ul>
+                        <div class="disclaimer">
+                            ⚠️ 本系统仅供参考学习，不能替代专业医疗诊断。如有严重症状，请及时就医。
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="typing" id="typing">
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </div>
+
+            <div class="quick-questions" id="quickQuestions">
+                <button class="quick-btn" onclick="ask('我最近总是失眠多梦，白天乏力')">😴 失眠多梦</button>
+                <button class="quick-btn" onclick="ask('胃痛，食欲不好，吃完东西就胀')">🫄 胃痛腹胀</button>
+                <button class="quick-btn" onclick="ask('咳嗽，有痰，喉咙不舒服')">🤧 咳嗽有痰</button>
+                <button class="quick-btn" onclick="ask('头痛头晕，眼睛干涩')">🤕 头痛头晕</button>
+                <button class="quick-btn" onclick="ask('腰膝酸软，怕冷，手脚冰凉')">🥶 腰膝酸软</button>
+                <button class="quick-btn" onclick="ask('心悸气短，容易出汗')">💓 心悸气短</button>
+            </div>
+
+            <div class="input-area" id="inputArea">
+                <input type="text" id="userInput" placeholder="描述您的症状..." onkeypress="if(event.key==='Enter')send()">
+                <button onclick="send()" id="sendBtn">发送</button>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        中医智能问诊系统 v2.0 · 基于 LangGraph + DeepSeek + Neo4j · 仅供参考，不构成医疗建议
+    </footer>
+
+    <script>
+        const API = '/api/v1/chat/generate';
+        const HIST = '/api/v1/chat/history';
+        const STATS = '/api/v1/chat/stats';
+        const TONGUE = '/api/v1/chat/tongue/analyze';
+
+        const messages = document.getElementById('messages');
+        const input = document.getElementById('userInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const typing = document.getElementById('typing');
+        const histList = document.getElementById('historyList');
+        const tonguePanel = document.getElementById('tonguePanel');
+        const quickQ = document.getElementById('quickQuestions');
+        const inputArea = document.getElementById('inputArea');
+
+        let convId = null;
+        let currentTab = 'chat';
+        let convs = [];
+        let img = null;
+
+        window.onload = () => { loadHist(); loadStats(); };
+
+        function switchTab(tab) {
+            currentTab = tab;
+            document.querySelectorAll('.func-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.nav-link').forEach(t => t.classList.remove('active'));
+            
+            // 隐藏所有面板
+            tonguePanel.classList.remove('active');
+            quickQ.style.display = 'flex';
+            inputArea.style.display = 'flex';
+            messages.style.display = 'block';
+            
+            // 根据tab类型设置活动状态和显示
+            const tabIndex = {'chat':0, 'tongue':1, 'history':2, 'cases':3}[tab] || 0;
+            document.querySelectorAll('.func-tab')[tabIndex].classList.add('active');
+            
+            if (tab === 'chat') {
+                document.querySelectorAll('.nav-link')[0].classList.add('active');
+                document.getElementById('chatTitle').textContent = '智能问诊';
+                document.getElementById('chatSubtitle').textContent = '描述您的症状，获取中医辨证分析';
+            } else if (tab === 'tongue') {
+                document.querySelectorAll('.nav-link')[1].classList.add('active');
+                document.getElementById('chatTitle').textContent = '舌苔分析';
+                document.getElementById('chatSubtitle').textContent = '上传舌苔图片，获取AI舌诊分析';
+                tonguePanel.classList.add('active');
+                quickQ.style.display = 'none';
+                inputArea.style.display = 'none';
+                messages.style.display = 'none';
+            } else if (tab === 'history') {
+                document.querySelectorAll('.nav-link')[0].classList.add('active');
+                document.getElementById('chatTitle').textContent = '历史记录';
+                document.getElementById('chatSubtitle').textContent = '查看历史问诊记录';
+            } else if (tab === 'cases') {
+                document.querySelectorAll('.nav-link')[0].classList.add('active');
+                document.getElementById('chatTitle').textContent = '医案库';
+                document.getElementById('chatSubtitle').textContent = '浏览相似医案参考';
+            }
+        }
+
+        async function loadHist() {
+            if (!authToken) return;
+            try {
+                const r = await fetch(HIST, {
+                    headers: {'Authorization': `Bearer ${authToken}`}
+                });
+                const d = await r.json();
+                convs = d.conversations || [];
+                renderHist();
+            } catch(e) { console.error(e); }
+        }
+
+        async function loadStats() {
+            if (!authToken) return;
+            try {
+                const r = await fetch(STATS, {
+                    headers: {'Authorization': `Bearer ${authToken}`}
+                });
+                const d = await r.json();
+                document.getElementById('statConversations').textContent = d.total_conversations || 0;
+                document.getElementById('statMessages').textContent = d.total_messages || 0;
+            } catch(e) { console.error(e); }
+        }
+
+        function renderHist() {
+            if (!convs.length) {
+                histList.innerHTML = '<div style="text-align:center;padding:24px;color:var(--color-text-muted);font-size:13px">暂无对话记录</div>';
+                return;
+            }
+            histList.innerHTML = convs.map(c => {
+                const t = new Date(c.updated_at||c.created_at).toLocaleString('zh-CN',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});
+                return `<div class="history-item ${c.conversation_id===convId?'active':''}" onclick="loadConv('${c.conversation_id}')">
+                    <div class="time">${t}</div>
+                    <div class="preview">${c.last_message||'新对话'}</div>
+                    <div class="meta">${c.message_count||0} 条消息</div>
+                </div>`;
+            }).join('');
+        }
+
+        async function loadConv(id) {
+            try {
+                const r = await fetch(`${HIST}/${id}`);
+                const d = await r.json();
+                if (d.error) return alert(d.error);
+                convId = id;
+                renderHist();
+                messages.innerHTML = '';
+                (d.messages||[]).forEach(m => { addMsg(m.user_message,true,false); addMsg(m.bot_response,false,false); });
+                messages.scrollTop = messages.scrollHeight;
+            } catch(e) { console.error(e); }
+        }
+
+        function startNewChat() {
+            convId = null;
+            messages.innerHTML = `<div class="message bot"><div class="message-bubble">
+                <h3>新问诊开始</h3>
+                <p>请描述您的症状，我将为您进行中医辨证分析。</p>
+                <div class="disclaimer">⚠️ 本系统仅供参考，不能替代专业医疗诊断。</div>
+            </div></div>`;
+            renderHist();
+            input.focus();
+        }
+
+        function addMsg(text, isUser=true, anim=true) {
+            const d = document.createElement('div');
+            d.className = `message ${isUser?'user':'bot'}`;
+            if (!anim) d.style.animation = 'none';
+            const b = document.createElement('div');
+            b.className = 'message-bubble';
+            b.innerHTML = isUser ? escHtml(text) : fmtMd(text);
+            d.appendChild(b);
+            messages.appendChild(d);
+            messages.scrollTop = messages.scrollHeight;
+        }
+
+        function escHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+        function fmtMd(t) {
+            t = t.replace(/\n/g,'<br>');
+            t = t.replace(/### (.*)/g,'<h3>$1</h3>');
+            t = t.replace(/## (.*)/g,'<h3>$1</h3>');
+            t = t.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>');
+            t = t.replace(/- (.*)/g,'<li>$1</li>');
+            t = t.replace(/(<li>.*<\/li>)/gs,'<ul>$1</ul>');
+            if (t.includes('知识图谱参考')) t = t.replace(/---\n### 📚 知识图谱参考/,'<div class="kg-section"><h4>📚 知识图谱参考</h4>');
+            
+            // 在回答末尾添加反馈按钮
+            if (t.includes('仅供参考') || t.includes('辨证')) {
+                t += `<div class="feedback-section" style="margin-top:16px; padding:12px; background:var(--color-accent-bg); border-radius:8px; text-align:center;">
+                    <p style="font-size:13px; color:var(--color-text-muted); margin-bottom:8px;">这个回答有帮助吗？</p>
+                    <button onclick="submitFeedback(true)" style="padding:6px 16px; background:var(--color-accent); color:white; border:none; border-radius:4px; font-size:13px; cursor:pointer; margin:0 4px;">👍 有帮助</button>
+                    <button onclick="submitFeedback(false)" style="padding:6px 16px; background:var(--color-text-muted); color:white; border:none; border-radius:4px; font-size:13px; cursor:pointer; margin:0 4px;">👎 需改进</button>
+                </div>`;
+            }
+            
+            return t;
+        }
+
+        function showTyping() { typing.style.display='block'; messages.scrollTop=messages.scrollHeight; }
+        function hideTyping() { typing.style.display='none'; }
+
+        async function send() {
+            const msg = input.value.trim();
+            if (!msg) return;
+            
+            // 检查登录状态
+            if (!authToken) {
+                alert('请先登录后再使用问诊功能');
+                showLoginModal();
+                return;
+            }
+            
+            addMsg(msg, true);
+            input.value = '';
+            sendBtn.disabled = true;
+            showTyping();
+            try {
+                const r = await fetch(API, {
+                    method:'POST',
+                    headers:{
+                        'Content-Type':'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body:JSON.stringify({message:msg,stream:false,conversation_id:convId})
+                });
+                const d = await r.json();
+                hideTyping();
+                if (d.answer) { addMsg(d.answer); convId=d.conversation_id; loadHist(); loadStats(); }
+                else if (d.error) addMsg(`错误：${d.error}`);
+                else addMsg('抱歉，处理您的请求时出现问题。');
+            } catch(e) { hideTyping(); addMsg(`网络错误：${e.message}`); }
+            finally { sendBtn.disabled=false; input.focus(); }
+        }
+
+        function ask(q) { input.value=q; send(); }
+
+        function previewImage(el) {
+            const f = el.files[0];
+            if (!f) return;
+            img = f;
+            const r = new FileReader();
+            r.onload = e => {
+                document.getElementById('imagePreview').src = e.target.result;
+                document.getElementById('imagePreview').style.display = 'block';
+                document.getElementById('analyzeBtn').style.display = 'block';
+            };
+            r.readAsDataURL(f);
+        }
+
+        async function analyzeTongue() {
+            if (!img) return alert('请先上传舌苔图片');
+            const btn = document.getElementById('analyzeBtn');
+            btn.disabled = true;
+            btn.textContent = '分析中...';
+            try {
+                const fd = new FormData();
+                fd.append('file', img);
+                const r = await fetch(TONGUE, {method:'POST',body:fd});
+                const d = await r.json();
+                if (d.status==='success') {
+                    switchTab('chat');
+                    addMsg('请分析我的舌苔图片', true);
+                    addMsg(d.analysis_text, false);
+                } else alert('分析失败：'+(d.error||'未知错误'));
+            } catch(e) { alert('分析失败：'+e.message); }
+            finally { btn.disabled=false; btn.textContent='开始分析'; }
+        }
+
+        input.focus();
+
+        // 提交反馈
+        async function submitFeedback(isHelpful) {
+            if (!authToken || !convId) {
+                alert('请先登录');
+                return;
+            }
+            
+            try {
+                const r = await fetch('/api/v1/data/feedback', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify({
+                        conversation_id: convId,
+                        is_helpful: isHelpful
+                    })
+                });
+                
+                if (r.ok) {
+                    alert('感谢您的反馈！');
+                    // 隐藏反馈按钮
+                    document.querySelectorAll('.feedback-section').forEach(el => {
+                        el.innerHTML = '<p style="font-size:13px; color:var(--color-accent);">✅ 感谢反馈</p>';
+                    });
+                }
+            } catch(e) {
+                console.error('提交反馈失败:', e);
+            }
+        }
+
+        // 用户认证相关
+        const AUTH_API = '/api/v1/auth';
+        let currentUser = null;
+        let authToken = localStorage.getItem('authToken');
+
+        // 检查登录状态
+        async function checkAuth() {
+            if (!authToken) return;
+            try {
+                const r = await fetch(`${AUTH_API}/me`, {
+                    headers: {'Authorization': `Bearer ${authToken}`}
+                });
+                if (r.ok) {
+                    currentUser = await r.json();
+                    updateUIForLoggedIn();
+                } else {
+                    localStorage.removeItem('authToken');
+                    authToken = null;
+                }
+            } catch(e) {
+                console.error('检查登录状态失败:', e);
+            }
+        }
+
+        // 更新UI为已登录状态
+        function updateUIForLoggedIn() {
+            document.getElementById('navUser').style.display = 'none';
+            document.getElementById('navUserInfo').style.display = 'flex';
+            document.getElementById('navNickname').textContent = currentUser.nickname || currentUser.username;
+            loadHist();
+            loadStats();
+        }
+
+        // 更新UI为未登录状态
+        function updateUIForLoggedOut() {
+            document.getElementById('navUser').style.display = 'flex';
+            document.getElementById('navUserInfo').style.display = 'none';
+            currentUser = null;
+        }
+
+        // 显示登录模态框
+        function showLoginModal() {
+            document.getElementById('loginModal').style.display = 'flex';
+            document.getElementById('registerModal').style.display = 'none';
+        }
+
+        // 显示注册模态框
+        function showRegisterModal() {
+            document.getElementById('registerModal').style.display = 'flex';
+            document.getElementById('loginModal').style.display = 'none';
+        }
+
+        // 关闭模态框
+        function closeModal(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+
+        // 登录
+        async function login() {
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            if (!username || !password) {
+                alert('请输入用户名和密码');
+                return;
+            }
+
+            try {
+                const formData = new URLSearchParams();
+                formData.append('username', username);
+                formData.append('password', password);
+
+                const r = await fetch(`${AUTH_API}/login`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                    body: formData
+                });
+
+                if (r.ok) {
+                    const data = await r.json();
+                    authToken = data.access_token;
+                    localStorage.setItem('authToken', authToken);
+                    currentUser = {id: data.user_id, username: data.username, nickname: data.nickname};
+                    updateUIForLoggedIn();
+                    closeModal('loginModal');
+                } else {
+                    const err = await r.json();
+                    alert(err.detail || '登录失败');
+                }
+            } catch(e) {
+                alert('登录失败: ' + e.message);
+            }
+        }
+
+        // 注册
+        async function register() {
+            const username = document.getElementById('regUsername').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+            const nickname = document.getElementById('regNickname').value;
+
+            if (!username || !email || !password) {
+                alert('请填写必填字段');
+                return;
+            }
+
+            try {
+                const r = await fetch(`${AUTH_API}/register`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({username, email, password, nickname})
+                });
+
+                if (r.ok) {
+                    const data = await r.json();
+                    authToken = data.access_token;
+                    localStorage.setItem('authToken', authToken);
+                    currentUser = {id: data.user_id, username: data.username, nickname: data.nickname};
+                    updateUIForLoggedIn();
+                    closeModal('registerModal');
+                    alert('注册成功！');
+                } else {
+                    const err = await r.json();
+                    alert(err.detail || '注册失败');
+                }
+            } catch(e) {
+                alert('注册失败: ' + e.message);
+            }
+        }
+
+        // 退出登录
+        function logout() {
+            localStorage.removeItem('authToken');
+            authToken = null;
+            currentUser = null;
+            updateUIForLoggedOut();
+            startNewChat();
+        }
+
+        // 页面加载时检查登录状态
+        checkAuth();
+    </script>
+
+    <!-- 登录模态框 -->
+    <div id="loginModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000; align-items:center; justify-content:center;">
+        <div style="background:white; border-radius:12px; padding:32px; width:360px; max-width:90%;">
+            <h3 style="font-size:20px; font-weight:600; margin-bottom:24px; text-align:center;">登录</h3>
+            <div style="margin-bottom:16px;">
+                <label style="display:block; font-size:14px; margin-bottom:6px; color:#615d59;">用户名</label>
+                <input type="text" id="loginUsername" style="width:100%; padding:10px 12px; border:1px solid rgba(0,0,0,0.1); border-radius:6px; font-size:14px;" placeholder="请输入用户名">
+            </div>
+            <div style="margin-bottom:24px;">
+                <label style="display:block; font-size:14px; margin-bottom:6px; color:#615d59;">密码</label>
+                <input type="password" id="loginPassword" style="width:100%; padding:10px 12px; border:1px solid rgba(0,0,0,0.1); border-radius:6px; font-size:14px;" placeholder="请输入密码">
+            </div>
+            <button onclick="login()" style="width:100%; padding:12px; background:var(--color-accent); color:white; border:none; border-radius:6px; font-size:14px; font-weight:500; cursor:pointer; margin-bottom:12px;">登录</button>
+            <div style="text-align:center; font-size:13px; color:#615d59;">
+                还没有账号？ <a href="#" onclick="showRegisterModal()" style="color:var(--color-accent);">立即注册</a>
+            </div>
+            <button onclick="closeModal('loginModal')" style="position:absolute; top:12px; right:12px; background:none; border:none; font-size:20px; cursor:pointer; color:#615d59;">×</button>
+        </div>
+    </div>
+
+    <!-- 注册模态框 -->
+    <div id="registerModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000; align-items:center; justify-content:center;">
+        <div style="background:white; border-radius:12px; padding:32px; width:360px; max-width:90%;">
+            <h3 style="font-size:20px; font-weight:600; margin-bottom:24px; text-align:center;">注册</h3>
+            <div style="margin-bottom:16px;">
+                <label style="display:block; font-size:14px; margin-bottom:6px; color:#615d59;">用户名 *</label>
+                <input type="text" id="regUsername" style="width:100%; padding:10px 12px; border:1px solid rgba(0,0,0,0.1); border-radius:6px; font-size:14px;" placeholder="请输入用户名">
+            </div>
+            <div style="margin-bottom:16px;">
+                <label style="display:block; font-size:14px; margin-bottom:6px; color:#615d59;">邮箱 *</label>
+                <input type="email" id="regEmail" style="width:100%; padding:10px 12px; border:1px solid rgba(0,0,0,0.1); border-radius:6px; font-size:14px;" placeholder="请输入邮箱">
+            </div>
+            <div style="margin-bottom:16px;">
+                <label style="display:block; font-size:14px; margin-bottom:6px; color:#615d59;">密码 *</label>
+                <input type="password" id="regPassword" style="width:100%; padding:10px 12px; border:1px solid rgba(0,0,0,0.1); border-radius:6px; font-size:14px;" placeholder="请输入密码">
+            </div>
+            <div style="margin-bottom:24px;">
+                <label style="display:block; font-size:14px; margin-bottom:6px; color:#615d59;">昵称</label>
+                <input type="text" id="regNickname" style="width:100%; padding:10px 12px; border:1px solid rgba(0,0,0,0.1); border-radius:6px; font-size:14px;" placeholder="请输入昵称（可选）">
+            </div>
+            <button onclick="register()" style="width:100%; padding:12px; background:var(--color-accent); color:white; border:none; border-radius:6px; font-size:14px; font-weight:500; cursor:pointer; margin-bottom:12px;">注册</button>
+            <div style="text-align:center; font-size:13px; color:#615d59;">
+                已有账号？ <a href="#" onclick="showLoginModal()" style="color:var(--color-accent);">立即登录</a>
+            </div>
+            <button onclick="closeModal('registerModal')" style="position:absolute; top:12px; right:12px; background:none; border:none; font-size:20px; cursor:pointer; color:#615d59;">×</button>
+        </div>
+    </div>
+</body>
+</html>

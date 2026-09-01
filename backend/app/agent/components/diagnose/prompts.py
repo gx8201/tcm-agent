@@ -1,0 +1,5 @@
+# 诊断子图提示词
+
+from app.agent.tcm_prompts import SIMPLE_DIAGNOSIS_PROMPT, MODERATE_DIAGNOSIS_PROMPT
+
+__all__ = ["SIMPLE_DIAGNOSIS_PROMPT", "MODERATE_DIAGNOSIS_PROMPT"]
