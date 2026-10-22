@@ -1,0 +1,29 @@
+# Render Blueprint - 中医智能问诊系统
+# 导入方法: https://render.com/docs/blueprints
+# 在 Render Dashboard → Blueprints → New Blueprint 中选择此文件
+
+services:
+  - type: web
+    name: tcm-agent
+    env: python
+    plan: free
+    repo: https://github.com/gx8201/tcm-agent
+    rootDir: backend
+    buildCommand: "pip install uv && uv sync"
+    startCommand: "uv run uvicorn main:app --host 0.0.0.0 --port $PORT"
+    autoDeploy: true
+    healthCheckPath: /health
+    envVars:
+      - key: DATABASE_URL
+        # ⚠️ 请将 Supabase 连接字符串填入此处
+        # 格式: postgresql://postgres.<project_ref>:<password>@aws-0-<region>.pooler.supabase.com:5432/postgres
+        value: ""
+        sync: false
+      - key: DEEPSEEK_API_KEY
+        value: ""
+        sync: false
+      - key: JWT_SECRET_KEY
+        value: ""
+        sync: false
+      - key: CORS_ORIGINS
+        value: "*"
